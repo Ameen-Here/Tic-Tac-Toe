@@ -30,8 +30,8 @@ const gameBoard = (() => {
 
 const displayController = (() => {
   const msgElement = document.getElementById("instructions");
-
   const board = document.querySelector(".game-board");
+  const resetBtn = document.getElementById("reset");
 
   // Dynamically Adding 9 boxes to the gameboard
   for (let i = 0; i < 9; i++) {
@@ -51,6 +51,13 @@ const displayController = (() => {
       gameController.playGame(parseInt(e.target.id));
       updateGameBoard();
     });
+  });
+
+  resetBtn.addEventListener("click", () => {
+    gameBoard.reset();
+    gameController.reset();
+    updateGameBoard();
+    setMsgElement("Player X's turn!");
   });
 
   const updateGameBoard = () => {
@@ -125,5 +132,10 @@ const gameController = (() => {
   const getIsOver = () => {
     return isOver;
   };
-  return { playGame, getIsOver };
+
+  const reset = () => {
+    isOver = false;
+    round = 1;
+  };
+  return { playGame, getIsOver, reset };
 })();
