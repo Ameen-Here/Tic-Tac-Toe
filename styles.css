@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Roboto:wght@300&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  font-family: "Roboto", sans-serif;
+  background-color: bisque;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+/* ************************ */
+
+h1 {
+  font-family: "Caveat", cursive;
+  font-weight: 700;
+  font-size: 3rem;
+}
+
+main {
+  flex: 1;
+}
+
+.game-board {
+  margin: 20px 0;
+  height: 460px;
+  width: 460px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.game-pieces {
+  background-color: whitesmoke;
+  border: 1px solid black;
+}
