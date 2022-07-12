@@ -1,6 +1,5 @@
 const Player = (sign) => {
   this.sign = sign;
-
   const getSign = () => {
     return sign;
   };
@@ -42,11 +41,11 @@ const displayController = (() => {
   }
 
   // Listening to button calls
-  const gamePieces = document.querySelectorAll(".game-pieces");
 
+  const gamePieces = document.querySelectorAll(".game-pieces");
   gamePieces.forEach((piece) => {
     piece.addEventListener("click", (e) => {
-      console.log(gameController.getIsOver());
+      // Checking if the game is over or the button is already populated
       if (gameController.getIsOver() || e.target.textContent !== "") return;
       gameController.playGame(parseInt(e.target.id));
       updateGameBoard();
@@ -89,7 +88,6 @@ const gameController = (() => {
 
   const playGame = (index) => {
     gameBoard.setField(index, getCurrentPlayerSign());
-    // console.log(isWin(index));
     if (isWin(index)) {
       displayController.setResult(getCurrentPlayerSign());
       isOver = true;
@@ -120,6 +118,7 @@ const gameController = (() => {
       [2, 4, 6],
     ];
 
+    // Returns true if any of this possible outcome happened
     return winPossibility
       .filter((everyComb) => everyComb.includes(index))
       .some((possibleComb) =>
@@ -138,4 +137,12 @@ const gameController = (() => {
     round = 1;
   };
   return { playGame, getIsOver, reset };
+})();
+
+// Dynamic footer
+(() => {
+  const footerYear = document.getElementById("year");
+  const dt = new Date();
+  const curYear = dt.getFullYear();
+  footerYear.textContent = curYear;
 })();
