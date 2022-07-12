@@ -1,19 +1,129 @@
-const gameBoard = document.querySelector(".game-board");
+const Player = (sign) => {
+  this.sign = sign;
 
-for (let i = 0; i < 9; i++) {
-  const html = `     
-  <div id="game-piece-${i + 1}" class="game-pieces">
-  </div>
-    `;
-  gameBoard.insertAdjacentHTML("beforeend", html);
-}
+  const getSign = () => {
+    return sign;
+  };
 
-const gamePieces = document.querySelectorAll(".game-pieces");
+  return { getSign };
+};
 
-console.log(gamePieces);
+const gameBoard = (() => {
+  const board = ["", "", "", "", "", "", "", "", ""];
 
-gamePieces.forEach((piece) => {
-  piece.addEventListener("click", (e) => {
-    console.log(e.target.id);
+  const getField = (index) => {
+    return board[index];
+  };
+
+  const setField = (index, sign) => {
+    board[index] = sign;
+  };
+
+  const reset = () => {
+    for (let i = 0; i < board.length; i++) {
+      board[i] = "";
+    }
+  };
+
+  return { setField, getField, reset };
+})();
+
+const displayController = (() => {
+  const msgElement = document.getElementById("instructions");
+
+  const board = document.querySelector(".game-board");
+
+  // Dynamically Adding 9 boxes to the gameboard
+  for (let i = 0; i < 9; i++) {
+    const html = `     
+      <div id="${i}" class="game-pieces"></div>
+        `;
+    board.insertAdjacentHTML("beforeend", html);
+  }
+
+  // Listening to button calls
+  const gamePieces = document.querySelectorAll(".game-pieces");
+
+  gamePieces.forEach((piece) => {
+    piece.addEventListener("click", (e) => {
+      console.log(gameController.getIsOver());
+      if (gameController.getIsOver() || e.target.textContent !== "") return;
+      gameController.playGame(parseInt(e.target.id));
+      updateGameBoard();
+    });
   });
-});
+
+  const updateGameBoard = () => {
+    for (let i = 0; i < gamePieces.length; i++) {
+      gamePieces[i].textContent = gameBoard.getField(i);
+    }
+  };
+
+  const setMsgElement = (msg) => {
+    msgElement.textContent = msg;
+  };
+
+  const setResult = (result) => {
+    if (result === "draw") {
+      setMsgElement("It's a draw!");
+    } else {
+      setMsgElement(`Player ${result} has won`);
+    }
+  };
+
+  return { setResult, setMsgElement };
+})();
+
+const gameController = (() => {
+  const playerX = Player("X");
+  const playerO = Player("O");
+  let round = 1;
+  let isOver = false;
+
+  const playGame = (index) => {
+    gameBoard.setField(index, getCurrentPlayerSign());
+    // console.log(isWin(index));
+    if (isWin(index)) {
+      displayController.setResult(getCurrentPlayerSign());
+      isOver = true;
+      return;
+    }
+    if (round === 9) {
+      displayController.setResult("draw");
+      isOver = true;
+      return;
+    }
+    round++;
+    displayController.setMsgElement(`Player ${getCurrentPlayerSign()}'s turn!`);
+  };
+
+  const getCurrentPlayerSign = () => {
+    return round % 2 === 0 ? playerO.getSign() : playerX.getSign();
+  };
+
+  const isWin = (index) => {
+    const winPossibility = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    return winPossibility
+      .filter((everyComb) => everyComb.includes(index))
+      .some((possibleComb) =>
+        possibleComb.every(
+          (ind) => gameBoard.getField(ind) === getCurrentPlayerSign()
+        )
+      );
+  };
+
+  const getIsOver = () => {
+    return isOver;
+  };
+  return { playGame, getIsOver };
+})();

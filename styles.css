@@ -10,6 +10,7 @@ body {
   min-height: 100vh;
   font-family: "Roboto", sans-serif;
   background-color: bisque;
+  text-align: center;
 }
 
 *,
@@ -24,6 +25,7 @@ h1 {
   font-family: "Caveat", cursive;
   font-weight: 700;
   font-size: 3rem;
+  margin: 0;
 }
 
 main {
@@ -42,4 +44,25 @@ main {
 .game-pieces {
   background-color: whitesmoke;
   border: 1px solid black;
+  text-align: center;
+  font-family: "Caveat", cursive;
+  font-size: 7rem;
+}
+
+#instructions {
+  font-size: 2rem;
+  margin-bottom: 0;
+}
+
+#reset {
+  width: 100px;
+  height: 30px;
+  border-radius: 10px;
+  background-color: rgb(70, 69, 69);
+  color: white;
+}
+
+#reset:hover {
+  background-color: rgb(197, 186, 186);
+  color: black;
 }
